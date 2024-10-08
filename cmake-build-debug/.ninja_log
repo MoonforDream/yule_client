@@ -1,0 +1,9 @@
+# ninja log v5
+0	128	7499276022708463	build.ninja	f8faebf6db4729dc
+14	2341	7477412967123598	CMakeFiles/yule_accelerator.dir/wrap.cpp.obj	5917b26939b973a2
+33	3478	7498210531398338	CMakeFiles/yule_accelerator.dir/client.cpp.obj	b0cc6af2d538cd9a
+3	1955	7498169374326382	CMakeFiles/yule_accelerator.dir/udpproxy.cpp.obj	146ea463fb230be9
+3	3398	7498210530588909	CMakeFiles/yule_accelerator.dir/main.cpp.obj	4df7afdf047febfd
+26	6717	7477413010775282	CMakeFiles/yule_accelerator.dir/tool.cpp.obj	a08cb6dac5ce3c7c
+17	2928	7498195130523161	CMakeFiles/yule_accelerator.dir/proxy.cpp.obj	8447a8c39236ed99
+3478	5455	7498210551056169	yule_accelerator.exe	fd761293d7aa19ad
