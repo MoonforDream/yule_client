@@ -288,7 +288,7 @@ void SOCKS_CLI::proxy_request(){
         proxy_mmp["VALORANT.exe"]=1;
         proxy_mmp["无畏契约登录器.exe"]=1;
 //        proxy_mmp["WeChat.exe"]=1;
-//        proxy_mmp["yule_client.exe"]=1;
+        proxy_mmp["yule_client.exe"]=1;
 //        startproxy("121.40.171.33",5006,"VALORANT-Win64-Shipping.exe",authid);
         startproxy("8.134.71.137",5006,authid);
 //        startproxy("8.134.71.137",5005,"yule_client.exe",authid);
