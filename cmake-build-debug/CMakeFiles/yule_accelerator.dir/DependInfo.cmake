@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "D:/yule_accelerator/client.cpp" "CMakeFiles/yule_accelerator.dir/client.cpp.obj" "gcc" "CMakeFiles/yule_accelerator.dir/client.cpp.obj.d"
+  "D:/yule_accelerator/log.cpp" "CMakeFiles/yule_accelerator.dir/log.cpp.obj" "gcc" "CMakeFiles/yule_accelerator.dir/log.cpp.obj.d"
   "D:/yule_accelerator/main.cpp" "CMakeFiles/yule_accelerator.dir/main.cpp.obj" "gcc" "CMakeFiles/yule_accelerator.dir/main.cpp.obj.d"
   "D:/yule_accelerator/proxy.cpp" "CMakeFiles/yule_accelerator.dir/proxy.cpp.obj" "gcc" "CMakeFiles/yule_accelerator.dir/proxy.cpp.obj.d"
   "D:/yule_accelerator/tool.cpp" "CMakeFiles/yule_accelerator.dir/tool.cpp.obj" "gcc" "CMakeFiles/yule_accelerator.dir/tool.cpp.obj.d"

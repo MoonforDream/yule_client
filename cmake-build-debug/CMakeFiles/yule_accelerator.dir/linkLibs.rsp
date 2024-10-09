@@ -1,1 +1,1 @@
-  -LD:/yule_accelerator/./lib  -lws2_32 -lWinDivert -liphlpapi -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
+  -LD:/yule_accelerator/./lib  -lws2_32 -lWinDivert -liphlpapi -lyaml-cpp -lspdlog -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

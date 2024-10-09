@@ -2,8 +2,6 @@
 #include "client.h"
 #include <cstdio>
 #include <cstring>
-#include "macro.h"
-#include "tool.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -252,7 +250,8 @@ void SOCKS_CLI::consult_method(){
     buf[2]=socks_method[0];
     Write(cfd,buf,3);
 //    std::cout<<"consult step "<<step<<std::endl;
-    printf("consult step %d\n",step);
+//    printf("consult step %d\n",step);
+    log("consult step 0");
 }
 
 void SOCKS_CLI::auth_send(){
@@ -266,7 +265,8 @@ void SOCKS_CLI::auth_send(){
         memcpy(data+3+Userlen,Pass.c_str(),Passlen);
         Write(cfd,data,strlen(data));
         step++;
-        printf("consult step %d\n",step);
+        log("consult step 1");
+//        printf("consult step %d\n",step);
 //        std::cout<<"consult step "<<step<<std::endl;
 //        bzero(buf, sizeof(buf));
         memset(buf,0,sizeof(buf));
@@ -279,30 +279,13 @@ void SOCKS_CLI::proxy_request(){
     uint64_t authid=0;
     if(buf[0]!=socks_ver) perr_exit("socks协议号不正确2");
     if(buf[1]==rep_fail) perr_exit("socks5认证失败");
-    //        std::cout<<"consult successfully!"<<std::endl;
-    printf("consult successfully!\n");
+    log("consult successfully!");
+//    printf("consult successfully!\n");
     memcpy(&authid,buf+2,sizeof(authid));
     if(authid!=0){
-        //VALORANT-Win64-Shipping.exe
-        proxy_mmp["VALORANT-Win64-Shipping.exe"]=1;
-        proxy_mmp["VALORANT.exe"]=1;
-        proxy_mmp["无畏契约登录器.exe"]=1;
-//        proxy_mmp["WeChat.exe"]=1;
-        proxy_mmp["yule_client.exe"]=1;
-//        startproxy("121.40.171.33",5006,"VALORANT-Win64-Shipping.exe",authid);
         startproxy("8.134.71.137",5006,authid);
-//        startproxy("8.134.71.137",5005,"yule_client.exe",authid);
     }
-//    data[0]=socks_ver;
-//    data[1]=CONNECT;
-//    data[2]=addrtype;
-//    data[3]=iplen;
-//    memcpy(data+4,dest_addr,iplen);
-//    data[4+iplen]=portlen;
-//    memcpy(data+5+iplen,dest_port,portlen);
-//    Write(cfd,data,5+iplen+portlen);
     step++;
-//    bzero(buf, sizeof(buf));
     memset(buf,0,sizeof(buf));
 }
 

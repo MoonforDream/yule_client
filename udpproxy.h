@@ -25,7 +25,7 @@ struct pseudoh{
 
 #include <windows.h>
 #include "tool.h"
-#include "windivert.h"
+#include <windivert.h>
 
 #define uint unsigned int
 #define ip4l sizeof(WINDIVERT_IPHDR)

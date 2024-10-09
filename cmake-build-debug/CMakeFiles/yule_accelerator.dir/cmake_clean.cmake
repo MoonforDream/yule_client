@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/yule_accelerator.dir/client.cpp.obj"
   "CMakeFiles/yule_accelerator.dir/client.cpp.obj.d"
+  "CMakeFiles/yule_accelerator.dir/log.cpp.obj"
+  "CMakeFiles/yule_accelerator.dir/log.cpp.obj.d"
   "CMakeFiles/yule_accelerator.dir/main.cpp.obj"
   "CMakeFiles/yule_accelerator.dir/main.cpp.obj.d"
   "CMakeFiles/yule_accelerator.dir/proxy.cpp.obj"

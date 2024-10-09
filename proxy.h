@@ -39,20 +39,36 @@ struct log_s{
 struct point{
     UINT32 addr;
     USHORT port;
-    bool operator<(const point& ep) const {
-        return (addr < ep.addr || (addr == ep.addr && port < ep.port));
+    bool operator==(const point& other) const {
+        return addr == other.addr && port == other.port;
     }
+//    bool operator<(const point& ep) const {
+//        return (addr < ep.addr || (addr == ep.addr && port < ep.port));
+//    }
     point() { }
     point(UINT32 _addr, USHORT _port) : addr(_addr), port(_port) { }
 };
 
+template<>
+struct std::hash<point> {
+    size_t operator()(const point& p) const {
+        return hash<UINT32>()(p.addr) ^ hash<USHORT>()(p.port);
+    }
+};
+
 //static std::unordered_map<std::string,int> plist;   //加速游戏进程名映射表
 static std::mutex mx;       //重定向操作锁
-static std::map<point,point> tcpmmp;    //tcp重定向映射表
-static std::map<point,point> udpmmp;    //udp重定向映射表
+//static std::map<point,point> tcpmmp;    //tcp重定向映射表
+//static std::map<point,point> udpmmp;    //udp重定向映射表
+static std::unordered_map<point,point> tcpmmp;
+static std::unordered_map<point,point> udpmmp;
+static std::mutex cache_mx; //进程表缓存锁
+static std::unordered_map<USHORT, std::pair<std::string, std::chrono::steady_clock::time_point>> pc_cache;
+extern int cache_rep;
 
-const int numThreads = 24; // 代理监听线程数
+extern int numThreads; // 代理监听线程数
 static std::vector<std::thread> threads;   //代理监听数组
+
 static HANDLE handle;  //网卡句柄
 extern std::unordered_map<std::string,int> proxy_mmp;
 
@@ -76,8 +92,10 @@ void handle_udp_in(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
 //void handle_udp_mtcphs(PWINDIVERT_IPHDR &iph,PWINDIVERT_UDPHDR &udph,mtcphs* fake_tcph,uint8_t *packet_data);
 
 //打印转发日志
-void log_redirect(UINT32 srcAddr, USHORT srcPort, UINT32 proxyAddr, USHORT proxyPort, UINT32 dstAddr, USHORT dstPort, int direction,int o_protocol,int n_protocol);
+//void log_redirect(UINT32 srcAddr, USHORT srcPort, UINT32 proxyAddr, USHORT proxyPort, UINT32 dstAddr, USHORT dstPort, int direction,int o_protocol,int n_protocol);
 //通过获取进程名
+//通过缓存获取进程名
+std::string getpname_cache(USHORT port);
 //通过端口获取进程名
 std::string getprocessname(USHORT port,int proctol);
 std::string getprocessname(USHORT port);

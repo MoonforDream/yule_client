@@ -1,17 +1,18 @@
 
-
+#include "log.h"
 #include "proxy.h"
 #include "tool.h"
 
 
 #ifdef _WIN32
 
+#include <unistd.h>
 
 std::unordered_map<std::string,int>proxy_mmp;
+int numThreads=1;
+int cache_rep=0;
 
 void startproxy(std::string r_ip,int r_port,uint64_t authid){
-    /* const int numThreads = 3; // 线程数
-    std::vector<std::thread> threads; */
     //网卡句柄，打开网卡,截取
     handle = WinDivertOpen(
             "(tcp and tcp.DstPort!=80 and tcp.DstPort!=443 and tcp.SrcPort!=80 and tcp.SrcPort!=443 and tcp.SrcPort!=22 and tcp.DstPort!=22) or udp",
@@ -25,10 +26,7 @@ void startproxy(std::string r_ip,int r_port,uint64_t authid){
         return;
     }
     for (int i = 0; i < numThreads; ++i) {
-        //NarakaBladepoint.exe
-//        threads.emplace_back(intercept_pkg,handle,"8.134.71.137",5005,"NarakaBladepoint.exe");
         threads.emplace_back(intercept_pkg,handle,r_ip,r_port,authid);
-//        threads.emplace_back(intercept_pkg,handle,"121.40.171.33",5005,"yule_client.exe");
     }
 
 }
@@ -42,8 +40,6 @@ void endproxy(){
 
 
 void intercept_pkg(HANDLE handle,std::string proxy_ip,int proxy_port,uint64_t authid) {
-//    char packet[MAXBUF];
-//    char *packet;
     uint8_t packet[MAXBUF];
     UINT recvsize=0;
     WINDIVERT_ADDRESS addr;
@@ -51,8 +47,6 @@ void intercept_pkg(HANDLE handle,std::string proxy_ip,int proxy_port,uint64_t au
     PWINDIVERT_IPV6HDR ip6_header;
     PWINDIVERT_TCPHDR tcp_header;
     PWINDIVERT_UDPHDR udp_header;
-
-    std::unique_lock<std::mutex> mxlock(mx,std::defer_lock);
 
     while (true) {
 
@@ -67,19 +61,17 @@ void intercept_pkg(HANDLE handle,std::string proxy_ip,int proxy_port,uint64_t au
             goto sendpkg;
         }
         if (ip_header&&tcp_header) {
-            std::string ps= addr.Outbound?getprocessname(tcp_header->SrcPort):getprocessname(tcp_header->DstPort);
+            std::string ps=addr.Outbound? getpname_cache(tcp_header->SrcPort): getpname_cache(tcp_header->DstPort);
             // TCP连接请求的处理
             if(proxy_mmp[ps]==1&&!addr.Outbound){
 //            if(proxy_mmp[ps]==1){
-                mxlock.lock();
                 handle_tcp(ip_header,tcp_header,udp_header,addr,proxy_ip,proxy_port,authid,packet);
                 recvsize=ntohs(ip_header->Length);
             }
         }
         if(ip_header&&udp_header){
-            std::string ps=getprocessname(udp_header->SrcPort,1);
+            std::string ps= getpname_cache(udp_header->SrcPort);
             if(addr.Outbound&&proxy_mmp[ps]==1){
-                mxlock.lock();
                 handle_udp_out(ip_header,tcp_header,udp_header,addr,proxy_ip,proxy_port,authid);
                 recvsize= ntohs(ip_header->Length);
             }
@@ -91,9 +83,6 @@ void intercept_pkg(HANDLE handle,std::string proxy_ip,int proxy_port,uint64_t au
         if (!WinDivertSend(handle, packet, recvsize,&writeLen, &addr)) {
             std::cerr << "Failed to send packet: " << GetLastError() << std::endl;
         }
-
-        if(mxlock.owns_lock())
-            mxlock.unlock();
     }
 }
 
@@ -106,7 +95,9 @@ void handle_tcp(PWINDIVERT_IPHDR &ip_header, PWINDIVERT_TCPHDR &tcp_header, PWIN
     point dst = {ip_header->DstAddr, tcp_header->DstPort};
     if (addr.Outbound) {
         // 修改目标IP和端口
+        mx.lock();
         tcpmmp[src] = dst;
+        mx.unlock();
         uint payloadlen= ntohs(ip_header->Length)-(ip_header->HdrLength<<2)-(tcp_header->HdrLength<<2);
         auto payload=(uint8_t *)(packet+(ip_header->HdrLength << 2) + (tcp_header->HdrLength << 2));
         authpkg ag{};
@@ -146,7 +137,9 @@ void handle_udp_out(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
                     PWINDIVERT_UDPHDR &udp_header,WINDIVERT_ADDRESS addr,std::string proxy_ip,int proxy_port,uint64_t authid){
     point src={ip_header->SrcAddr,udp_header->SrcPort};
     point dst={ip_header->DstAddr,udp_header->DstPort};
+    mx.lock();
     udpmmp[src] = dst;
+    mx.unlock();
     proxy_ix px{};
     px.dstport=htons(proxy_port);
     px.srcport=udp_header->SrcPort;
@@ -192,27 +185,27 @@ void handle_udp_in(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
 
 
 
-// 打印日志
-void log_redirect(UINT32 srcAddr, USHORT srcPort, UINT32 proxyAddr, USHORT proxyPort, UINT32 dstAddr, USHORT dstPort,
-                  int direction, int o_protocol,int n_protocol) {
-    const char *o_s = o_protocol ? "UDP" : "TCP";
-    const char *n_s=n_protocol?"UDP":"TCP";
-    if (direction == 0) {
-        printf("[Redirect]: (%s)",o_s);
-        std::cout << "[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
-                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]";
-        std::cout << " -> ("<<n_s<<")[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
-                  << ConvertIP(proxyAddr) << ":" << ntohs(proxyPort) << "]" << std::endl;
-    } else if (direction == 1) {
-        printf("[Received]: (%s)",o_s);
-        std::cout << "[" << ConvertIP(proxyAddr) << ":" << ntohs(proxyPort) << " -> "
-                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]";
-        std::cout <<  " -> ("<<n_s<<")[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
-                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]" << std::endl;
-    } else {
-        std::cout << "X Error ";
-    }
-}
+//// 打印日志
+//void log_redirect(UINT32 srcAddr, USHORT srcPort, UINT32 proxyAddr, USHORT proxyPort, UINT32 dstAddr, USHORT dstPort,
+//                  int direction, int o_protocol,int n_protocol) {
+//    const char *o_s = o_protocol ? "UDP" : "TCP";
+//    const char *n_s=n_protocol?"UDP":"TCP";
+//    if (direction == 0) {
+//        printf("[Redirect]: (%s)",o_s);
+//        std::cout << "[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
+//                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]";
+//        std::cout << " -> ("<<n_s<<")[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
+//                  << ConvertIP(proxyAddr) << ":" << ntohs(proxyPort) << "]" << std::endl;
+//    } else if (direction == 1) {
+//        printf("[Received]: (%s)",o_s);
+//        std::cout << "[" << ConvertIP(proxyAddr) << ":" << ntohs(proxyPort) << " -> "
+//                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]";
+//        std::cout <<  " -> ("<<n_s<<")[" << ConvertIP(srcAddr) << ":" << ntohs(srcPort) << " -> "
+//                  << ConvertIP(dstAddr) << ":" << ntohs(dstPort) << "]" << std::endl;
+//    } else {
+//        std::cout << "X Error ";
+//    }
+//}
 
 
 
@@ -235,6 +228,30 @@ std::string getprocessbypid(DWORD pid) {
     return processName;
 }
 
+std::string getpname_cache(USHORT port) {
+    auto now = std::chrono::steady_clock::now();
+    {
+        std::lock_guard<std::mutex> lock(cache_mx);
+        auto it = pc_cache.find(port);
+        if (it != pc_cache.end()) {
+            // 检查缓存是否过期（5秒）
+            if (now - it->second.second < std::chrono::seconds(cache_rep)) {
+                return it->second.first;
+            } else {
+                pc_cache.erase(it);
+            }
+        }
+    }
+    // 如果缓存中没有，或者已过期，重新获取
+    std::string process_name = getprocessname(port);
+    {
+        std::lock_guard<std::mutex> lock(cache_mx);
+        pc_cache[port] = { process_name, now };
+    }
+    return process_name;
+}
+
+
 std::string getprocessname(USHORT port,int proctol) {
     if (proctol == 0) {
         return getprocessbytcp(port);
@@ -245,7 +262,7 @@ std::string getprocessname(USHORT port,int proctol) {
 
 std::string getprocessname(USHORT port) {
     std::string s= getprocessbyudp(port);
-    return (s!=""&&s!="Process not found")?s: getprocessbytcp(port);
+    return (s!=""&&s!="Process not found"&&s!="Unknown")?s: getprocessbytcp(port);
 }
 
 std::string getprocessbytcp(USHORT port) {

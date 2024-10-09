@@ -5,11 +5,15 @@
 
 #include "wrap.h"
 #include "proxy.h"
+#include "log.h"
+#include "macro.h"
+#include "tool.h"
 #include <ws2tcpip.h>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <thread>
+
 
 class CLIENT {
 public:

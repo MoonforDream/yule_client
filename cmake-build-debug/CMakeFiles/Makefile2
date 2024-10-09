@@ -80,12 +80,12 @@ clean: CMakeFiles/yule_accelerator.dir/clean
 CMakeFiles/yule_accelerator.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\yule_accelerator\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target yule_accelerator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\yule_accelerator\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target yule_accelerator"
 .PHONY : CMakeFiles/yule_accelerator.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/yule_accelerator.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\yule_accelerator\cmake-build-debug\CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\yule_accelerator\cmake-build-debug\CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/yule_accelerator.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\yule_accelerator\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/yule_accelerator.dir/rule

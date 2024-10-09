@@ -172,6 +172,30 @@ client.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/client.cpp.s
 .PHONY : client.cpp.s
 
+log.obj: log.cpp.obj
+.PHONY : log.obj
+
+# target to build an object file
+log.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/log.cpp.obj
+.PHONY : log.cpp.obj
+
+log.i: log.cpp.i
+.PHONY : log.i
+
+# target to preprocess a source file
+log.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/log.cpp.i
+.PHONY : log.cpp.i
+
+log.s: log.cpp.s
+.PHONY : log.s
+
+# target to generate assembly for a file
+log.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\yule_accelerator.dir\build.make CMakeFiles/yule_accelerator.dir/log.cpp.s
+.PHONY : log.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -306,6 +330,9 @@ help:
 	@echo ... client.obj
 	@echo ... client.i
 	@echo ... client.s
+	@echo ... log.obj
+	@echo ... log.i
+	@echo ... log.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
