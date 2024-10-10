@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="yule_accelerator"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/yule_accelerator/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="yule_accelerator">
+				<Option output="D:/yule_accelerator/cmake-build-release/yule_accelerator.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/yule_accelerator/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DYAML_CPP_DLL"/>
+					<Add directory="D:/yule_accelerator/./include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 yule_accelerator"/>
+					<CompileFile command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="yule_accelerator/fast">
+				<Option output="D:/yule_accelerator/cmake-build-release/yule_accelerator.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/yule_accelerator/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DYAML_CPP_DLL"/>
+					<Add directory="D:/yule_accelerator/./include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../include"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed"/>
+					<Add directory="D:/CLion 2023.3.4/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 yule_accelerator/fast"/>
+					<CompileFile command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/yule_accelerator/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/yule_accelerator/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/CLion 2023.3.4/bin/mingw/bin/mingw32-make.exe -f &quot;D:/yule_accelerator/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/yule_accelerator/client.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/client.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/log.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/log.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/main.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/proxy.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/proxy.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/tool.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/tool.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/udpproxy.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/udpproxy.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/wrap.cpp">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/wrap.h">
+			<Option target="yule_accelerator"/>
+		</Unit>
+		<Unit filename="D:/yule_accelerator/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

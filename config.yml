@@ -1,0 +1,18 @@
+# 代理服务器配置
+r_ip: 8.134.71.137
+r_port: 5005
+
+# 代理程序配置
+numThreads: 4   #代理程序线程
+cache_rep: 10   #缓存时间
+
+# 日志线程配置
+log_thread: 1
+
+# 进程代理配置
+proxy_pname:
+  - VALORANT-Win64-Shipping.exe
+  - VALORANT.exe
+  - 无畏契约登录器.exe
+  - NarakaBladepoint.exe
+  - yule_client.exe

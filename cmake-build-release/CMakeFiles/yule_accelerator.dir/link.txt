@@ -1,0 +1,3 @@
+"D:\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\yule_accelerator.dir/objects.a
+"D:\CLion 2023.3.4\bin\mingw\bin\ar.exe" qc CMakeFiles\yule_accelerator.dir/objects.a @CMakeFiles\yule_accelerator.dir\objects1.rsp
+"D:\CLion 2023.3.4\bin\mingw\bin\g++.exe" -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\yule_accelerator.dir/objects.a -Wl,--no-whole-archive -o yule_accelerator.exe -Wl,--out-implib,libyule_accelerator.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\yule_accelerator.dir\linkLibs.rsp
