@@ -94,6 +94,12 @@ void handle_tcp(PWINDIVERT_IPHDR &ip_header, PWINDIVERT_TCPHDR &tcp_header, PWIN
     point src = {ip_header->SrcAddr, tcp_header->SrcPort};
     point dst = {ip_header->DstAddr, tcp_header->DstPort};
     if (addr.Outbound) {
+        log_s lgs{};
+        lgs.o_protocol=0;
+        lgs.o_srcaddr=ip_header->SrcAddr;
+        lgs.o_srcport=tcp_header->SrcPort;
+        lgs.o_dstaddr=ip_header->DstAddr;
+        lgs.o_dstport=tcp_header->DstPort;
         // 修改目标IP和端口
         mx.lock();
         tcpmmp[src] = dst;
@@ -113,18 +119,36 @@ void handle_tcp(PWINDIVERT_IPHDR &ip_header, PWINDIVERT_TCPHDR &tcp_header, PWIN
         tcp_header->DstPort = htons(proxy_port);
         ip_header->Checksum=0;
         tcp_header->Checksum=0;
+        lgs.n_protocol=0;
+        lgs.n_srcaddr=ip_header->SrcAddr;
+        lgs.n_srcport=tcp_header->SrcPort;
+        lgs.n_dstaddr=ip_header->DstAddr;
+        lgs.n_srcport=tcp_header->DstPort;
+        log_redirect(lgs,0);
         //打印转发信息
-        log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, ip_header->DstAddr, tcp_header->DstPort,
-                     dst.addr, dst.port, 0, 0,0);
+//        log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, ip_header->DstAddr, tcp_header->DstPort,
+//                     dst.addr, dst.port, 0, 0,0);
     } else {
         //对tcp入站流量修改
         if (tcpmmp.find(dst) != tcpmmp.end()) {
+            log_s lgs{};
+            lgs.o_protocol=0;
+            lgs.o_srcaddr=ip_header->SrcAddr;
+            lgs.o_srcport=tcp_header->SrcPort;
+            lgs.o_dstaddr=ip_header->DstAddr;
+            lgs.o_dstport=tcp_header->DstPort;
             point op = tcpmmp[dst];
             ip_header->SrcAddr = op.addr;
             tcp_header->SrcPort = op.port;
+            lgs.n_protocol=0;
+            lgs.n_srcaddr=ip_header->SrcAddr;
+            lgs.n_srcport=tcp_header->SrcPort;
+            lgs.n_dstaddr=ip_header->DstAddr;
+            lgs.n_srcport=tcp_header->DstPort;
+            log_redirect(lgs,1);
             //打印转发信息
-            log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, src.addr, src.port, ip_header->DstAddr,
-                         tcp_header->DstPort, 1, 0,0);
+//            log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, src.addr, src.port, ip_header->DstAddr,
+//                         tcp_header->DstPort, 1, 0,0);
         }
         //对udp进站流量处理
         else if (udpmmp.find(dst) != udpmmp.end()) {
@@ -135,6 +159,12 @@ void handle_tcp(PWINDIVERT_IPHDR &ip_header, PWINDIVERT_TCPHDR &tcp_header, PWIN
 
 void handle_udp_out(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
                     PWINDIVERT_UDPHDR &udp_header,WINDIVERT_ADDRESS addr,std::string proxy_ip,int proxy_port,uint64_t authid){
+    log_s lgs{};
+    lgs.n_protocol=1;
+    lgs.n_srcaddr=ip_header->SrcAddr;
+    lgs.n_srcport=udp_header->SrcPort;
+    lgs.n_dstaddr=ip_header->DstAddr;
+    lgs.n_dstport=udp_header->DstPort;
     point src={ip_header->SrcAddr,udp_header->SrcPort};
     point dst={ip_header->DstAddr,udp_header->DstPort};
     mx.lock();
@@ -159,13 +189,25 @@ void handle_udp_out(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
     //修改目标ip和目标端口，并且进行伪装tcp
     fake_tcp(ip_header,tcp_header,px);
     udp_header= nullptr;
-    log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, ip_header->DstAddr, tcp_header->DstPort,
-                 dst.addr, dst.port, 0,1,0);
+    lgs.o_protocol=0;
+    lgs.o_srcaddr=ip_header->SrcAddr;
+    lgs.o_srcport=tcp_header->SrcPort;
+    lgs.o_dstaddr=ip_header->DstAddr;
+    lgs.o_dstport=tcp_header->DstPort;
+    log_redirect(lgs,0);
+//    log_redirect(ip_header->SrcAddr, tcp_header->SrcPort, ip_header->DstAddr, tcp_header->DstPort,
+//                 dst.addr, dst.port, 0,1,0);
 }
 
 
 void handle_udp_in(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
                    PWINDIVERT_UDPHDR &udp_header,WINDIVERT_ADDRESS addr,point src,point dst){
+    log_s lgs{};
+    lgs.o_protocol=0;
+    lgs.o_srcaddr=ip_header->SrcAddr;
+    lgs.o_srcport=tcp_header->SrcPort;
+    lgs.o_dstaddr=ip_header->DstAddr;
+    lgs.o_dstport=tcp_header->DstPort;
     point op = udpmmp[dst];
     uint payloadlen= ntohs(ip_header->Length)-(ip_header->HdrLength<<2)-tcpl;
     auto payload = (uint8_t *) (tcp_header + 1);
@@ -179,8 +221,14 @@ void handle_udp_in(PWINDIVERT_IPHDR &ip_header,PWINDIVERT_TCPHDR &tcp_header,
     memset(udp_header,0,udpl);
     parse_fake(ip_header, udp_header, payloadlen,px);
     tcp_header = nullptr;
-    log_redirect(ip_header->SrcAddr, udp_header->SrcPort, src.addr, src.port, ip_header->DstAddr,
-                 udp_header->DstPort, 1, 0,1);
+    lgs.n_protocol=1;
+    lgs.n_srcaddr=ip_header->SrcAddr;
+    lgs.n_srcport=udp_header->SrcPort;
+    lgs.n_dstaddr=ip_header->DstAddr;
+    lgs.n_dstport=udp_header->DstPort;
+    log_redirect(lgs,1);
+//    log_redirect(ip_header->SrcAddr, udp_header->SrcPort, src.addr, src.port, ip_header->DstAddr,
+//                 udp_header->DstPort, 1, 0,1);
 }
 
 

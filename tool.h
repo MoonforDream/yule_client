@@ -16,7 +16,19 @@
 // 转换 网络字节序IP 地址为字符串
 std::string ConvertIP(UINT32 addr);
 
-
+//代理日志信息结构体
+struct log_s{
+    uint32_t o_srcaddr;     //原起始地址
+    uint32_t o_dstaddr;     //原目标地址
+    uint16_t o_srcport;     //原起始端口
+    uint16_t o_dstport;     //原目标端口
+    uint32_t n_srcaddr;     //新起始地址
+    uint32_t n_dstaddr;     //新目标地址
+    uint16_t n_srcport;     //新起始端口
+    uint16_t n_dstport;     //新目标端口
+    int o_protocol;         //原协议字段,1代表udp,0代表tcp
+    int n_protocol;         //新协议字段,1代表udp,0代表tcp
+};
 #else
 
 

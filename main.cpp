@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 //    log("read configuration file...");
     sleep(1);
     try{
-        config = YAML::LoadFile("config.yml");
+        config = YAML::LoadFile("../config.yml");
     } catch(YAML::BadFile &e) {
 //        error_handling("read error!");
         std::cout<<"read error!"<<std::endl;
@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
     }
     ip=config["r_ip"].as<std::string>();
     port=config["r_port"].as<int>();
+    std::cout<<port<<std::endl;
     numThreads=config["numThreads"].as<int>();
     cache_rep=config["cache_rep"].as<int>();
     for(auto const &it:config["proxy_pname"]){

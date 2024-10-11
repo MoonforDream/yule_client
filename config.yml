@@ -7,7 +7,7 @@ numThreads: 4   #代理程序线程
 cache_rep: 10   #缓存时间
 
 # 日志线程配置
-log_thread: 1
+log_thread: 2
 
 # 进程代理配置
 proxy_pname:

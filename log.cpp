@@ -13,7 +13,8 @@ void init_logging() {
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
     spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] %v"); // 彩色日志输出
-    spdlog::set_level(spdlog::level::trace); // 默认日志级别为 trace
+//    spdlog::set_level(spdlog::level::trace); // 默认日志级别为 trace
+    spdlog::set_level(spdlog::level::info);
 }
 
 void log(const std::string& message, LogLevel level) {
@@ -42,10 +43,20 @@ void log(const std::string& message, LogLevel level) {
 void log_redirect(UINT32 srcAddr, USHORT srcPort, UINT32 proxyAddr, USHORT proxyPort, UINT32 dstAddr, USHORT dstPort, int direction, int o_protocol, int n_protocol) {
     const char *o_s = o_protocol ? "UDP" : "TCP";
     const char *n_s = n_protocol ? "UDP" : "TCP";
-    std::string message = fmt::format("[{}] [{}:{} -> {}:{}] -> [{}] [{}:{} -> {}:{}] ",
-                                      direction == 0 ? "Redirect" : "Received",
-                                      ConvertIP(srcAddr), srcPort, ConvertIP(dstAddr), dstPort,
-                                      n_s, ConvertIP(srcAddr), srcPort, ConvertIP(proxyAddr), proxyPort);
+    std::string message = fmt::format("[{}] ({})[{}:{} -> {}:{}] -> ({})[{}:{} -> {}:{}] ",
+                                      direction == 0 ? "Redirect" : "Received",o_s,
+                                      ConvertIP(srcAddr), ntohs(srcPort), ConvertIP(dstAddr), ntohs(dstPort),
+                                      n_s, ConvertIP(srcAddr), ntohs(srcPort), ConvertIP(proxyAddr), ntohs(proxyPort));
+    log(message, LogLevel::info);
+}
+
+void log_redirect(log_s &lgs,int flags){
+    const char *o_s = lgs.o_protocol ? "UDP" : "TCP";
+    const char *n_s = lgs.n_protocol ? "UDP" : "TCP";
+    std::string message = fmt::format("[{}] ({})[{}:{} -> {}:{}] -> ({})[{}:{} -> {}:{}] ",
+                                      flags == 0 ? "Redirect" : "Received",o_s,
+                                      ConvertIP(lgs.o_srcaddr), ntohs(lgs.o_srcport), ConvertIP(lgs.o_dstaddr), ntohs(lgs.o_dstport),
+                                      n_s, ConvertIP(lgs.n_srcaddr), ntohs(lgs.n_srcport), ConvertIP(lgs.n_dstaddr), ntohs(lgs.n_dstport));
     log(message, LogLevel::info);
 }
 
